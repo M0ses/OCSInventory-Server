@@ -149,6 +149,11 @@ echo
 
 # Check mysql client distribution version
 echo "Checking for database server properties" >> $SETUP_LOG
+MYSQL_CLIENT_BIN=`type mysql 2>/dev/null`
+if [ -z "$MYSQL_CLIENT_BIN" ];then
+  echo "No mysql client found. ABORTING!"
+  exit 1;
+fi
 DB_CLIENT_MAJOR_VERSION=`eval mysql -V | cut -d' ' -f6 | cut -d'.' -f1` >> $SETUP_LOG 2>&1
 DB_CLIENT_MINOR_VERSION=`eval mysql -V | cut -d' ' -f6 | cut -d'.' -f2` >> $SETUP_LOG 2>&1
 echo "Your MySQL client seems to be part of MySQL version $DB_CLIENT_MAJOR_VERSION.$DB_CLIENT_MINOR_VERSION."
