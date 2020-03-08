@@ -103,6 +103,9 @@ elif [ -f /etc/debian_version ]
 elif [ -f /etc/SuSE-release ]
 	then
 		UNIX_DISTRIBUTION="suse"
+elif [ -f /etc/os-release ]
+	then
+        grep -qiw suse /etc/os-release && UNIX_DISTRIBUTION="suse"
 fi
 
 # Check for Apache web server binaries
