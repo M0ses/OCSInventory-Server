@@ -105,11 +105,12 @@ elif [ -f /etc/SuSE-release ]
 		UNIX_DISTRIBUTION="suse"
 elif [ -f /etc/os-release ]
 	then
-        grep -qiw suse /etc/os-release
-        if [ $? -eq 0 ];then
-                UNIX_DISTRIBUTION="suse"
-                APACHE_CONFIG_DIRECTORY="/etc/apache2/conf.d"
-        fi
+		grep -qiw suse /etc/os-release && UNIX_DISTRIBUTION="suse"
+fi
+
+if [ "$UNIX_DISTRIBUTION" == "suse" ]
+	then
+		APACHE_CONFIG_DIRECTORY="/etc/apache2/conf.d"
 fi
 
 # Check for Apache web server binaries
