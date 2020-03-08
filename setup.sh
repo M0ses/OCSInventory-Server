@@ -82,6 +82,17 @@ REST_API_DIRECTORY=""
 
 ###################### DO NOT MODIFY BELOW #######################
 
+### START DEFINITION OF FUNCTIONS
+function read_ligne {
+  if [ "$OCS_INVENTORY_SETUP_NON_INTERACTIVE" == "1" ]
+	then
+		ligne=$1
+	else
+		read ligne
+  fi
+}
+### END   DEFINITION OF FUNCTIONS
+
 # Check for Apache web server binaries
 echo
 echo "+----------------------------------------------------------+"
@@ -123,7 +134,7 @@ echo "CAUTION: If upgrading Communication server from OCS Inventory NG 1.0 RC2 a
 echo "previous, please remove any Apache configuration for Communication Server!"
 echo
 echo -n "Do you wish to continue ([y]/n)?"
-read ligne
+read_ligne y
 if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 	then
 		echo "Assuming Communication server 1.0 RC2 or previous is not installed"
@@ -189,7 +200,7 @@ if [ $res -eq 0 ]
 		# Not 4.1 or higher, ask user to contnue ?
 		echo "Your computer does not seem to be compliant with MySQL 4.1 or higher."
 		echo -n "Do you wish to continue (y/[n])?"
-		read ligne
+		read_ligne n
 		if [ "$ligne" = "y" ]
 			then
 				echo "Ensure your database server is running MySQL 4.1 or higher !"
@@ -209,7 +220,7 @@ res=0
 while [ $res -eq 0 ]
 	do
 		echo -n "Which host is running database server [$DB_SERVER_HOST] ?"
-		read ligne
+		read_ligne $DB_SERVER_HOST
 		if [ -z "$ligne" ]
 			then
 				res=1
@@ -228,7 +239,7 @@ res=0
 while [ $res -eq 0 ]
 do
 	echo -n "On which port is running database server [$DB_SERVER_PORT] ?"
-	read ligne
+	read_ligne $DB_SERVER_PORT
 	if [ -z "$ligne" ]
 		then
 			res=1
@@ -273,7 +284,7 @@ res=0
 while [ $res -eq 0 ]
 	do
 		echo -n "Where is Apache daemon binary [$APACHE_BIN_FOUND] ?"
-		read ligne
+		read_ligne $APACHE_BIN_FOUND
 		if [ -z "$ligne" ]
 			then
 				APACHE_BIN=$APACHE_BIN_FOUND
@@ -327,7 +338,7 @@ res=0
 while [ $res -eq 0 ]
 	do
 		echo -n "Where is Apache main configuration file [$APACHE_CONFIG_FILE_FOUND] ?"
-		read ligne
+		read_ligne $APACHE_CONFIG_FILE_FOUND
 		if [ -z "$ligne" ]
 			then
 				APACHE_CONFIG_FILE=$APACHE_CONFIG_FILE_FOUND
@@ -389,7 +400,7 @@ res=0
 while [ $res -eq 0 ]
 	do
 		echo -n "Which user account is running Apache web server [$APACHE_USER_FOUND] ?"
-		read ligne
+		read_ligne $APACHE_USER_FOUND
 		if [ -z "$ligne" ]
 			then
 				APACHE_USER=$APACHE_USER_FOUND
@@ -451,7 +462,7 @@ res=0
 while [ $res -eq 0 ]
 	do
 		echo -n "Which user group is running Apache web server [$APACHE_GROUP_FOUND] ?"
-		read ligne
+		read_ligne $APACHE_GROUP_FOUND
 		if [ -z "$ligne" ]
 			then
 				APACHE_GROUP=$APACHE_GROUP_FOUND
@@ -507,7 +518,7 @@ res=0
 while [ $res -eq 0 ]
 	do
 		echo -n "Where is Apache Include configuration directory [$APACHE_CONFIG_DIRECTORY_FOUND] ?"
-		read ligne
+		read_ligne $APACHE_CONFIG_DIRECTORY_FOUND
 		if [ -z "$ligne" ]
 			then
 				APACHE_CONFIG_DIRECTORY=$APACHE_CONFIG_DIRECTORY_FOUND
@@ -565,7 +576,7 @@ res=0
 while [ $res -eq 0 ]
 	do
 		echo -n "Where is PERL interpreter binary [$PERL_BIN] ?"
-		read ligne
+		read_ligne $PERL_BIN
 		if [ -n "$ligne" ]
 			then
 				PERL_BIN="$ligne"
@@ -595,7 +606,7 @@ echo
 
 echo
 echo -n "Do you wish to setup Communication server on this computer ([y]/n)?"
-read ligne
+read_ligne y
 if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 	then
 		# Setting up Communication server
@@ -655,7 +666,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 								echo "Enter 1 for mod_perl 1.99_21 or previous."
 								echo "Enter 2 for mod_perl 1.99_22 and higher."
 								echo -n "Which version of Apache mod_perl the computer is running ([1]/2) ?"
-								read ligne
+								read_ligne 1
 								if [ -z "$ligne" ]
 									then
 										APACHE_MOD_PERL_VERSION=1
@@ -696,7 +707,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 				echo "by setting integer value of LOGLEVEL to 1 in Administration console"
 				echo "menu Configuration."
 				echo -n "Where to put Communication server log directory [$OCS_COM_SRV_LOG] ?"
-				read ligne
+				read_ligne $OCS_COM_SRV_LOG
 				if [ -n "$ligne" ]
 					then
 						OCS_COM_SRV_LOG=$ligne
@@ -721,7 +732,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 			do
 				echo "Communication server need a directory for plugins configuration files. "
 				echo -n "Where to put Communication server plugins configuration files [$OCS_COM_SRV_PLUGINS_CONFIG_DIR] ?"
-				read ligne
+				read_ligne $OCS_COM_SRV_PLUGINS_CONFIG_DIR
 				if [ -n "$ligne" ]
 					then
 						OCS_COM_SRV_PLUGINS_CONFIG_DIR=$ligne
@@ -745,7 +756,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 			do
 				echo "Communication server need a directory for plugins Perl modules files."
 				echo -n "Where to put Communication server plugins Perl modules files [$OCS_COM_SRV_PLUGINS_PERL_DIR] ?"
-				read ligne
+				read_ligne $OCS_COM_SRV_PLUGINS_PERL_DIR
 				if [ -n "$ligne" ]
 					then
 						OCS_COM_SRV_PLUGINS_PERL_DIR=$ligne
@@ -890,7 +901,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 				echo "OCS setup.sh can install perl module from packages for you"
 				echo "The script will use the native package from your operating system like apt or rpm"
 				echo -n "Do you wish to continue (y/[n])?"
-				read ligne
+				read_ligne n
 				if [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 					then
 						case $UNIX_DISTRIBUTION in
@@ -1024,7 +1035,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
                                 echo "*** Warning: PERL module Apache2::SOAP is not installed !"
                                 echo "This module is only required by OCS Inventory NG SOAP Web Service."
                                 echo -n "Do you wish to continue ([y]/n] ?"
-                                read ligne
+                                read_ligne y
                                 if [ -z "$ligne" ] || [ "$ligne" = "y" ]
                                         then
                                                 echo "User choose to continue setup without PERL module SOAP::Apache2" >> $SETUP_LOG
@@ -1046,7 +1057,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 				echo "*** Warning: PERL module XML::Entities is not installed !"
 				echo "This module is only required by OCS Inventory NG SOAP Web Service."
 				echo -n "Do you wish to continue ([y]/n] ?"
-				read ligne
+				read_ligne y
 				if [ -z "$ligne" ] || [ "$ligne" = "y" ]
 					then
 						echo "User choose to continue setup without PERL module XML::Entities" >> $SETUP_LOG
@@ -1063,7 +1074,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 
 		echo
 		echo -n "Do you wish to setup Rest API server on this computer ([y]/n)?"
-		read ligne
+		read_ligne y
 		if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 			then
 				echo
@@ -1082,7 +1093,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 					then
 						echo "*** ERROR: PERL module Mojolicious::Lite is not installed !"
 						echo -n "Do you wish to continue (y/[n])?"
-						read ligne
+						read_ligne n
 						if [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 							then
 								echo "User choose to continue setup without PERL module Mojolicious::Lite" >> $SETUP_LOG
@@ -1101,7 +1112,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 					then
 						echo "*** ERROR: PERL module Switch is not installed !"
 						echo -n "Do you wish to continue (y/[n])?"
-						read ligne
+						read_ligne n
 						if [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 							then
 								echo "User choose to continue setup without PERL module Switch" >> $SETUP_LOG
@@ -1120,7 +1131,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 					then
 						echo "*** ERROR: PERL module Plack::Handler is not installed !"
 						echo -n "Do you wish to continue (y/[n])?"
-						read ligne
+						read_ligne n
 						if [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 							then
 								echo "User choose to continue setup without PERL module Plack::Handler" >> $SETUP_LOG
@@ -1144,7 +1155,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 				REST_API_DIRECTORY=$($PERL_BIN -e "print \"@INC[2]\"")
 
 				echo -n "Where do you want the API code to be store [$REST_API_DIRECTORY] ?"
-				read ligne
+				read_ligne $REST_API_DIRECTORY
 				if [ -z "$ligne" ]
 					then
 						REST_API_DIRECTORY=$REST_API_DIRECTORY
@@ -1183,7 +1194,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 		if [ $? -ne 0 ]
 			then
 				echo -n "Warning: Prerequisites too old ! Do you wish to continue (y/[n])?"
-				read ligne
+				read_ligne n
 				if [ "$ligne" = "y" ]
 					then
 						echo "Maybe Communication server will encounter problems. Continuing anyway."
@@ -1359,7 +1370,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 		echo "'z-$COM_SERVER_APACHE_CONF_FILE' instead of '$COM_SERVER_APACHE_CONF_FILE'."
 		echo "Do you allow Setup renaming Communication Server Apache configuration file"
 		echo -n "to 'z-$COM_SERVER_APACHE_CONF_FILE' ([y]/n) ?"
-		read ligne
+		read_ligne y
 		if [ -z $ligne ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 			then
 				echo "OK, using 'z-$COM_SERVER_APACHE_CONF_FILE' as Communication Server Apache configuration file"
@@ -1422,7 +1433,7 @@ fi
 echo
 echo "Do you wish to setup Administration Server (Web Administration Console)"
 echo -n "on this computer ([y]/n)?"
-read ligne
+read_ligne y
 if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 	then
 		# Install Administration server
@@ -1447,7 +1458,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 		echo "$ADM_SERVER_VAR_DIR), especially if you use deployment feature."
 		echo
 		echo -n "Do you wish to continue ([y]/n)?"
-		read ligne
+		read_ligne y
 		if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 			then
 				echo "Assuming directories 'ocsreports' and 'download' removed from"
@@ -1462,7 +1473,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 		echo "Checking for Administration Server directories..." >> $SETUP_LOG
 		echo "Where to copy Administration Server static files for PHP Web Console"
 		echo -n "[$ADM_SERVER_STATIC_DIR] ?"
-		read ligne
+		read_ligne $ADM_SERVER_STATIC_DIR
 		if test -z $ligne
 			then
 				ADM_SERVER_STATIC_DIR=$ADM_SERVER_STATIC_DIR
@@ -1475,7 +1486,7 @@ if [ -z "$ligne" ] || [ "$ligne" = "y" ] || [ "$ligne" = "Y" ]
 		echo
 		echo "Where to create writable/cache directories for deployment packages,"
 		echo -n "administration console logs, IPDiscover and SNMP [$ADM_SERVER_VAR_DIR] ?"
-		read ligne
+		read_ligne $ADM_SERVER_VAR_DIR
 		if test -z $ligne
 			then
 				ADM_SERVER_VAR_DIR=$ADM_SERVER_VAR_DIR
