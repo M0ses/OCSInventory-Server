@@ -105,7 +105,11 @@ elif [ -f /etc/SuSE-release ]
 		UNIX_DISTRIBUTION="suse"
 elif [ -f /etc/os-release ]
 	then
-        grep -qiw suse /etc/os-release && UNIX_DISTRIBUTION="suse"
+        grep -qiw suse /etc/os-release
+        if [ $? -eq 0 ];then
+                UNIX_DISTRIBUTION="suse"
+                APACHE_CONFIG_DIRECTORY="/etc/apache2/conf.d"
+        fi
 fi
 
 # Check for Apache web server binaries
@@ -490,6 +494,8 @@ if [ -z "$APACHE_CONFIG_DIRECTORY" ]
 			then
 				echo "Found Apache Include configuration directory $APACHE_CONFIG_DIRECTORY_FOUND" >> $SETUP_LOG
 		fi
+        else
+               [ -d $APACHE_CONFIG_DIRECTORY ] && APACHE_CONFIG_DIRECTORY_FOUND=$APACHE_CONFIG_DIRECTORY
 fi
 
 # Ask user's confirmation
